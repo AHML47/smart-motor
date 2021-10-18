@@ -214,23 +214,8 @@ def set_relay( PIN, status):
             relay8.off()
             St8 = 0
     return St1,St2,St3,St4,St5,St6,St7,St8
-
-def LCD_menu() :
-    global counter
-    global buttonSt
-    global St1
-    counter_pos( 1 , 3 )
-    
-    lcd.text(" relay", 1)
-    lcd.text(" temp    next", 2)
-    lcd.text(">",counter_pos( 1 , 3 ))
-    if counter_pos( 1 , 3 ) == 3 :
-        lcd.text(" temp   >next", 2)
-        
-    if buttonSt == 1 :
-        if counter_pos( 1 , 3 ) == 1 :
-    #the relay menu
-            while True :
+def relay_menu():
+    while True :
                 counter_pos(1, 10)
                 boutton_pos()
                 lcd.text(" R1  R2  R3  R4 '", 1)
@@ -447,44 +432,21 @@ def LCD_menu() :
                                     break
                     if counter_pos(1, 10) == 10 :
                         break
-
-
-
-                                
-        if counter_pos( 1 , 3 ) == 2 :
-    #the temp menu
-            while True :
-        
-        
-                counter = 0
-                print ("Counter ", counter)
-                print ("botton ", buttonSt)
-                boutton_pos()
-                temp1 = thermocouple1.get_temp()
-                time.sleep(0.05)
-                temp = str (temp1)
-                lcd.text("the temp is "+temp+"C°", 1)
-                lcd.text(">back", 2)
-                time.sleep(0.05)
-                if buttonSt == 1 :
-                    break
-        #next page
-        if counter_pos( 1 , 3 ) == 3 :
-            while True :
-                print ("Counter ", counter)
-                print ("botton ", buttonSt)
-                boutton_pos()
-                lcd.text(" music", 1)
-                lcd.text(" wifi_st    next", 2)
-                lcd.text(">",counter_pos( 1 , 3 ))
-                if counter_pos( 1 , 3 ) == 3 :
-                    lcd.text(" wifi_st   >next", 2)
-                    if buttonSt == 1 :
-                        break
-                
-                if buttonSt == 1 :
-                    #music menu
-                    if counter_pos( 1 , 3 ) == 1 :
+def temp_menu():
+    counter = 0
+    print ("Counter ", counter)
+    print ("botton ", buttonSt)
+    while True:
+        boutton_pos()
+        temp1 = thermocouple1.get_temp()
+        time.sleep(0.05)
+        temp = str (temp1)
+        lcd.text("the temp is "+temp+"C°", 1)
+        lcd.text(">back", 2)
+        time.sleep(0.05)
+        if buttonSt == 1 :
+            break
+def music_menu():
                         while True:
                             boutton_pos()
                             lcd.text(" music1 ' music3", 1)
@@ -507,11 +469,7 @@ def LCD_menu() :
                             if counter_pos(1,6) == 6:
                                 lcd.text(" music1 ' music3", 1)
                                 lcd.text(" music2>  music4", 2)
-
-
                             if buttonSt == 1 :
-                                
-                                
                                 if counter_pos(1,6) == 1:
                                     while True :
                                         boutton_pos()
@@ -528,9 +486,7 @@ def LCD_menu() :
                                             if counter_pos(1,2) == 2:
                                                 pygame.mixer.music.stop()
                                                 break
-                                            
-                                            
-                                            
+                                                
                                 if counter_pos(1,6) == 2:
                                     while True :
                                         boutton_pos()
@@ -581,6 +537,7 @@ def LCD_menu() :
                                             if counter_pos(1,2) == 2:
                                                 pygame.mixer.music.stop()
                                                 break
+                                                
                                 if counter_pos(1,6) == 5:
                                     while True:
                                         boutton_pos()
@@ -593,6 +550,59 @@ def LCD_menu() :
                                         
                                 if counter_pos(1,6) == 6:
                                     break
+    
+def LCD_menu() :
+    global counter
+    global buttonSt
+    global St1
+    counter_pos( 1 , 3 )
+    
+    lcd.text(" relay", 1)
+    lcd.text(" temp    next", 2)
+    lcd.text(">",counter_pos( 1 , 3 ))
+    if counter_pos( 1 , 3 ) == 3 :
+        lcd.text(" temp   >next", 2)
+        
+    if buttonSt == 1 :
+        if counter_pos( 1 , 3 ) == 1 :
+                        #the relay menu
+            while True :
+                relay_menu()
+                if counter_pos(1, 10) == 10 :
+                    break
+
+        if counter_pos( 1 , 3 ) == 2 :
+                        #the temp menu
+            buttonSt = 0
+            while True :
+                temp_menu()
+                if buttonSt == 1 :
+                    break
+        
+        
+                
+                        #next page
+        if counter_pos( 1 , 3 ) == 3 :
+            while True :
+                print ("Counter ", counter)
+                print ("botton ", buttonSt)
+                boutton_pos()
+                lcd.text(" music", 1)
+                lcd.text(" wifi_st    next", 2)
+                lcd.text(">",counter_pos( 1 , 3 ))
+                if counter_pos( 1 , 3 ) == 3 :
+                    lcd.text(" wifi_st   >next", 2)
+                    if buttonSt == 1 :
+                        break
+                
+                if buttonSt == 1 :
+                                    #music menu
+                    if counter_pos( 1 , 3 ) == 1 :
+                        while True :
+                            music_menu()
+                            if counter_pos(1,6) == 6:
+                                break
+                    
                     if counter_pos( 1 , 3 ) == 2 :
                         while True:
                             boutton_pos()
@@ -624,6 +634,7 @@ while running:
             pygame.mixer.music.queue ( song ) # Queue the next one in the list
          else:
             print ("Playlist is empty")
+
         
             
     
